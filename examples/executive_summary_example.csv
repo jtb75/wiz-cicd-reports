@@ -1,0 +1,15 @@
+EXECUTIVE SUMMARY - SCAN VERDICTS
+Metric,Value,Percentage
+Total Scans,1228,100%
+Passed,541,44.1%
+Failed,297,24.2%
+Warned,384,31.3%
+
+FINDINGS BY TYPE
+Finding Type,Total,Critical,High,Medium,Low
+Vulnerabilities,98204,4558,20198,34607,38584
+Secrets,1362,0,920,409,32
+Iac,16883,284,2372,8373,5242
+Sast,0,0,0,0,0
+Data,2664,396,325,786,308
+Malware,0,0,0,0,0
