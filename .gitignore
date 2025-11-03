@@ -1,0 +1,45 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.claude
+
+# Environment variables
+.env
+
+# Test coverage
+.coverage
+htmlcov/
+.pytest_cache/
+*.cover
+
+# Package build
+*.egg-info/
+dist/
+build/
+
+# Generated reports (output directory)
+output/
+*.csv
+*.html
+
+# Archived files
+.old_files/
+
+# OS specific
+.DS_Store
+Thumbs.db
