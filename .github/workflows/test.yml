@@ -1,4 +1,4 @@
-name: Run Tests
+name: Test Suite
 
 on:
   pull_request:
@@ -8,6 +8,7 @@ on:
 
 jobs:
   test:
+    name: Test Python ${{ matrix.python-version }}
     runs-on: ubuntu-latest
     strategy:
       matrix:
