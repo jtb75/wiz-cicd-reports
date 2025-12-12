@@ -20,7 +20,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from collections import defaultdict
 
-from wiz_cicd import WizCICDReporter, create_time_filter_variables
+from wiz_cicd import WizCICDReporter, create_time_filter_variables, get_icons, get_console_icon, get_js_icon_object
 
 # Load environment variables
 env_path = Path(__file__).parent / '.env'
@@ -101,8 +101,10 @@ def group_scans_by_tags(scans_with_tags, primary_tag='wiz:environment', secondar
     return dict(groups)
 
 
-def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time_range_desc="Last 30 days"):
+def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time_range_desc="Last 30 days", icon_style="ascii"):
     """Generate multi-tab HTML dashboard."""
+    # Get icons for the selected style
+    icons = get_icons(icon_style)
     os.makedirs(output_dir, exist_ok=True)
 
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
@@ -1331,7 +1333,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 <div class="top-risky-header">
                     <h2 id="topRiskyTitle">Top 10 Riskiest Applications</h2>
                     <div class="risk-legend">
-                        <span style="font-size: 12px; color: #64748b;">Risk Score: Critical*5 + High*3.5 + Medium*2 + Low*1</span>
+                        <span style="font-size: 12px; color: #64748b;">Risk Score: Critical{icons['multiply']}5 + High{icons['multiply']}3.5 + Medium{icons['multiply']}2 + Low{icons['multiply']}1</span>
                     </div>
                 </div>
                 <div class="table-container">
@@ -1424,7 +1426,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                         <div class="checkbox-dropdown">
                             <div class="dropdown-button" onclick="toggleScanTypeDropdown()">
                                 <span id="scanTypeLabel">All Types (5)</span>
-                                <span class="dropdown-arrow">v</span>
+                                <span class="dropdown-arrow">{icons['arrow_down']}</span>
                             </div>
                             <div class="dropdown-panel" id="scanTypePanel">
                                 <div class="dropdown-item" onclick="document.getElementById('type_CONTAINER_IMAGE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
@@ -1465,7 +1467,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 <div class="resource-sidebar" id="resourceSidebar">
                     <div class="sidebar-header">
                         <h3>Resources</h3>
-                        <button class="sidebar-toggle" onclick="toggleSidebar()">&lt;</button>
+                        <button class="sidebar-toggle" onclick="toggleSidebar()">{icons['arrow_left']}</button>
                     </div>
 
                     <div class="resource-search">
@@ -1673,7 +1675,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 const row = `
                     <tr class="${{rankClass}}" onclick="drillDownToApp('${{escapedName}}')" title="Click to view details in Detailed tab">
                         <td class="rank-cell">#${{rank}}</td>
-                        <td class="name-cell">${{name}} <span style="color: #94a3b8; font-size: 12px; margin-left: 8px;">&gt;</span></td>
+                        <td class="name-cell">${{name}} <span style="color: #94a3b8; font-size: 12px; margin-left: 8px;">{icons['arrow_right']}</span></td>
                         <td style="text-align: center;"><span class="badge critical">${{critical}}</span></td>
                         <td style="text-align: center;"><span class="badge high">${{high}}</span></td>
                         <td style="text-align: center;"><span class="badge medium">${{medium}}</span></td>
@@ -2034,7 +2036,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 doc.text('Top 10 Riskiest Applications', 14, currentY);
                 doc.setFontSize(8);
                 doc.setFont(undefined, 'normal');
-                doc.text('Risk Score: Critical*5 + High*3.5 + Medium*2 + Low*1', 14, currentY + 6);
+                doc.text('Risk Score: Critical{icons['multiply']}5 + High{icons['multiply']}3.5 + Medium{icons['multiply']}2 + Low{icons['multiply']}1', 14, currentY + 6);
 
                 // Get top 10 data
                 const top10Items = getLatestScanPerApp(allScans);
@@ -2391,21 +2393,15 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
 
         // Get icon for scan type
         function getScanTypeIcon(scanType) {{
-            const icons = {{
-                'CONTAINER_IMAGE': '[C]',
-                'DIRECTORY': '[D]',
-                'IAC': '[I]',
-                'VIRTUAL_MACHINE_IMAGE': '[V]',
-                'VIRTUAL_MACHINE': '[M]'
-            }};
-            return icons[scanType] || '[?]';
+            const icons = {get_js_icon_object(icon_style)};
+            return icons[scanType] || '{icons['unknown']}';
         }}
 
         function toggleSidebar() {{
             const sidebar = document.getElementById('resourceSidebar');
             const toggle = sidebar.querySelector('.sidebar-toggle');
             sidebar.classList.toggle('collapsed');
-            toggle.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
+            toggle.textContent = sidebar.classList.contains('collapsed') ? '{icons['arrow_right']}' : '{icons['arrow_left']}';
         }}
 
         function initializeDetailedReporting() {{
@@ -2765,7 +2761,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 summaryRow.dataset.scanIndex = index;
 
                 summaryRow.innerHTML = `
-                    <td><span class="expand-icon">&gt;</span></td>
+                    <td><span class="expand-icon">{icons['arrow_right']}</span></td>
                     <td>${{dateTime}}</td>
                     <td><span class="badge ${{verdictClass}}">${{verdictText}}</span></td>
                     <td><span class="badge critical">${{scan.total_critical || 0}}</span></td>
@@ -3155,6 +3151,13 @@ Examples:
         default='output',
         help='Output directory for generated dashboard. Default: output/'
     )
+    parser.add_argument(
+        '--icons',
+        type=str,
+        default='ascii',
+        choices=['ascii', 'unicode', 'html'],
+        help='Icon style for output (ascii, unicode, html). Default: ascii'
+    )
 
     args = parser.parse_args()
 
@@ -3178,13 +3181,17 @@ Examples:
     print(f"Output Dir: {args.output_dir}")
     print()
 
+    # Get icon style
+    icon_style = args.icons
+    ok_icon = get_console_icon('ok', icon_style)
+
     # Initialize reporter
     reporter = WizCICDReporter(CLIENT_ID, CLIENT_SECRET)
 
     # Authenticate
     print("Authenticating with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"  [OK] Authenticated (Data Center: {dc})")
+    print(f"  {ok_icon} Authenticated (Data Center: {dc})")
     print()
 
     # Create custom query variables with time filter
@@ -3192,17 +3199,17 @@ Examples:
 
     # Fetch data
     print(f"Fetching CI/CD scan data ({time_desc})...")
-    scans = reporter.fetch_all_scans(variables=variables)
+    scans = reporter.fetch_all_scans(variables=variables, icon_style=icon_style)
 
     # Generate dashboard
     print("Generating multi-tab HTML dashboard...")
     print("  Tab 1: Executive Summary (high-level charts and KPIs)")
     print("  Tab 2: Detailed Reporting (app filter + resource drill-down + trends)")
-    filename = generate_html_dashboard(reporter, output_dir=args.output_dir, time_range_desc=time_desc)
+    filename = generate_html_dashboard(reporter, output_dir=args.output_dir, time_range_desc=time_desc, icon_style=icon_style)
     print()
 
     print("="*80)
-    print(f"[OK] Multi-tab dashboard generated successfully!")
+    print(f"{ok_icon} Multi-tab dashboard generated successfully!")
     print(f"  Time Range: {time_desc}")
     print(f"  Total Scans: {len(scans)}")
     print(f"  Open in browser: {filename}")
