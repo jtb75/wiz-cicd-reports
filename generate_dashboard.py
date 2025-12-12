@@ -826,7 +826,7 @@ def main():
     # Authenticate
     print("Authenticating with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"  ✓ Authenticated (Data Center: {dc})")
+    print(f"  [OK] Authenticated (Data Center: {dc})")
     print()
 
     # Fetch data with time filter
@@ -840,7 +840,7 @@ def main():
     print()
 
     print("="*80)
-    print(f"✓ Dashboard generated successfully!")
+    print(f"[OK] Dashboard generated successfully!")
     print(f"  Open in browser: {filename}")
     print("="*80)
 
