@@ -87,7 +87,7 @@ def main():
     # Authenticate
     print("Authenticating with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"  ✓ Successfully authenticated (Data Center: {dc})")
+    print(f"  [OK] Successfully authenticated (Data Center: {dc})")
     print()
 
     # Fetch data with time filter
@@ -100,13 +100,13 @@ def main():
     print("Generating CSV reports...")
     files = reporter.generate_csv_reports()
     for report_type, filename in files.items():
-        print(f"  ✓ {report_type}: {filename}")
+        print(f"  [OK] {report_type}: {filename}")
     print()
 
     # Print summary
     reporter.print_summary()
 
-    print("\n✓ All reports generated successfully!")
+    print("\n[OK] All reports generated successfully!")
     return 0
 
 

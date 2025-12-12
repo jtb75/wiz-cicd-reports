@@ -303,7 +303,7 @@ class WizCICDReporter:
 
         logger.info(f"Successfully retrieved {len(all_events)} total scans")
         if verbose:
-            print(f"✓ Retrieved {len(all_events)} total scans\n")
+            print(f"[OK] Retrieved {len(all_events)} total scans\n")
 
         # Cache the raw scans
         self._raw_scans = all_events

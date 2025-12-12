@@ -83,7 +83,7 @@ def main():
     # Authenticate
     print("2. Authenticate with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"   ✓ Authenticated (Data Center: {dc})")
+    print(f"   [OK] Authenticated (Data Center: {dc})")
     print()
 
     # Fetch scans with time filter
@@ -96,7 +96,7 @@ def main():
     print("4. Calculate statistics...")
     verdict_stats = reporter.get_verdict_stats()
     finding_stats = reporter.get_finding_stats()
-    print("   ✓ Statistics calculated")
+    print("   [OK] Statistics calculated")
     print()
 
     # Print summary
@@ -108,7 +108,7 @@ def main():
     # Extract tags
     print("6. Extract tags...")
     tags = reporter.extract_tags()
-    print(f"   ✓ Found {len(tags)} unique tag keys")
+    print(f"   [OK] Found {len(tags)} unique tag keys")
     for key, values in list(tags.items())[:3]:  # Show first 3
         print(f"     - {key}: {len(values)} values")
     print()
@@ -117,11 +117,11 @@ def main():
     print("7. Generate CSV reports...")
     files = reporter.generate_csv_reports(output_dir="output")
     for report_type, filepath in files.items():
-        print(f"   ✓ {report_type}: {filepath}")
+        print(f"   [OK] {report_type}: {filepath}")
     print()
 
     print("=" * 60)
-    print("✓ Example complete!")
+    print("[OK] Example complete!")
     print("=" * 60)
 
     return 0

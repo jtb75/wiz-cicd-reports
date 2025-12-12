@@ -1288,12 +1288,12 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                     Executive Summary
                 </button>
                 <button class="tab-button" onclick="switchTab('detailed')">
-                    📋 Detailed Reporting
+                    Detailed Reporting
                 </button>
             </div>
             <div class="tab-export">
                 <button class="export-button pdf" id="tabExportBtn" onclick="exportCurrentTab()">
-                    📄 Export as PDF
+                    Export as PDF
                 </button>
             </div>
         </div>
@@ -1331,7 +1331,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 <div class="top-risky-header">
                     <h2 id="topRiskyTitle">Top 10 Riskiest Applications</h2>
                     <div class="risk-legend">
-                        <span style="font-size: 12px; color: #64748b;">Risk Score: Critical×5 + High×3.5 + Medium×2 + Low×1</span>
+                        <span style="font-size: 12px; color: #64748b;">Risk Score: Critical*5 + High*3.5 + Medium*2 + Low*1</span>
                     </div>
                 </div>
                 <div class="table-container">
@@ -1424,32 +1424,27 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                         <div class="checkbox-dropdown">
                             <div class="dropdown-button" onclick="toggleScanTypeDropdown()">
                                 <span id="scanTypeLabel">All Types (5)</span>
-                                <span class="dropdown-arrow">▼</span>
+                                <span class="dropdown-arrow">v</span>
                             </div>
                             <div class="dropdown-panel" id="scanTypePanel">
                                 <div class="dropdown-item" onclick="document.getElementById('type_CONTAINER_IMAGE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_CONTAINER_IMAGE" value="CONTAINER_IMAGE" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">🐳</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">Container Image</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_DIRECTORY').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_DIRECTORY" value="DIRECTORY" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">📁</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">Directory</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_IAC').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_IAC" value="IAC" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">☁️</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">IaC</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_VIRTUAL_MACHINE_IMAGE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_VIRTUAL_MACHINE_IMAGE" value="VIRTUAL_MACHINE_IMAGE" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">💿</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">VM Image</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_VIRTUAL_MACHINE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_VIRTUAL_MACHINE" value="VIRTUAL_MACHINE" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">🖥️</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">Virtual Machine</span>
                                 </div>
                             </div>
@@ -1470,7 +1465,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 <div class="resource-sidebar" id="resourceSidebar">
                     <div class="sidebar-header">
                         <h3>Resources</h3>
-                        <button class="sidebar-toggle" onclick="toggleSidebar()">◀</button>
+                        <button class="sidebar-toggle" onclick="toggleSidebar()">&lt;</button>
                     </div>
 
                     <div class="resource-search">
@@ -1678,7 +1673,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 const row = `
                     <tr class="${{rankClass}}" onclick="drillDownToApp('${{escapedName}}')" title="Click to view details in Detailed tab">
                         <td class="rank-cell">#${{rank}}</td>
-                        <td class="name-cell">${{name}} <span style="color: #94a3b8; font-size: 12px; margin-left: 8px;">→</span></td>
+                        <td class="name-cell">${{name}} <span style="color: #94a3b8; font-size: 12px; margin-left: 8px;">&gt;</span></td>
                         <td style="text-align: center;"><span class="badge critical">${{critical}}</span></td>
                         <td style="text-align: center;"><span class="badge high">${{high}}</span></td>
                         <td style="text-align: center;"><span class="badge medium">${{medium}}</span></td>
@@ -2039,7 +2034,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 doc.text('Top 10 Riskiest Applications', 14, currentY);
                 doc.setFontSize(8);
                 doc.setFont(undefined, 'normal');
-                doc.text('Risk Score: Critical×5 + High×3.5 + Medium×2 + Low×1', 14, currentY + 6);
+                doc.text('Risk Score: Critical*5 + High*3.5 + Medium*2 + Low*1', 14, currentY + 6);
 
                 // Get top 10 data
                 const top10Items = getLatestScanPerApp(allScans);
@@ -2397,20 +2392,20 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
         // Get icon for scan type
         function getScanTypeIcon(scanType) {{
             const icons = {{
-                'CONTAINER_IMAGE': '🐳',
-                'DIRECTORY': '📁',
-                'IAC': '☁️',
-                'VIRTUAL_MACHINE_IMAGE': '💿',
-                'VIRTUAL_MACHINE': '🖥️'
+                'CONTAINER_IMAGE': '[C]',
+                'DIRECTORY': '[D]',
+                'IAC': '[I]',
+                'VIRTUAL_MACHINE_IMAGE': '[V]',
+                'VIRTUAL_MACHINE': '[M]'
             }};
-            return icons[scanType] || '📄';
+            return icons[scanType] || '[?]';
         }}
 
         function toggleSidebar() {{
             const sidebar = document.getElementById('resourceSidebar');
             const toggle = sidebar.querySelector('.sidebar-toggle');
             sidebar.classList.toggle('collapsed');
-            toggle.textContent = sidebar.classList.contains('collapsed') ? '▶' : '◀';
+            toggle.textContent = sidebar.classList.contains('collapsed') ? '>' : '<';
         }}
 
         function initializeDetailedReporting() {{
@@ -2770,7 +2765,7 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                 summaryRow.dataset.scanIndex = index;
 
                 summaryRow.innerHTML = `
-                    <td><span class="expand-icon">▶</span></td>
+                    <td><span class="expand-icon">&gt;</span></td>
                     <td>${{dateTime}}</td>
                     <td><span class="badge ${{verdictClass}}">${{verdictText}}</span></td>
                     <td><span class="badge critical">${{scan.total_critical || 0}}</span></td>
@@ -3189,7 +3184,7 @@ Examples:
     # Authenticate
     print("Authenticating with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"  ✓ Authenticated (Data Center: {dc})")
+    print(f"  [OK] Authenticated (Data Center: {dc})")
     print()
 
     # Create custom query variables with time filter
@@ -3207,7 +3202,7 @@ Examples:
     print()
 
     print("="*80)
-    print(f"✓ Multi-tab dashboard generated successfully!")
+    print(f"[OK] Multi-tab dashboard generated successfully!")
     print(f"  Time Range: {time_desc}")
     print(f"  Total Scans: {len(scans)}")
     print(f"  Open in browser: {filename}")
