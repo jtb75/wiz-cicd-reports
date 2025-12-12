@@ -20,7 +20,7 @@ import argparse
 from pathlib import Path
 from dotenv import load_dotenv
 
-from wiz_cicd import WizCICDReporter, create_time_filter_variables, configure_logging
+from wiz_cicd import WizCICDReporter, create_time_filter_variables, configure_logging, get_console_icon
 
 # Load environment variables
 env_path = Path(__file__).parent / '.env'
@@ -56,6 +56,9 @@ def main():
     parser.add_argument('--log-level', type=str, default='WARNING',
                        choices=['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL'],
                        help='Set logging level (default: WARNING)')
+    parser.add_argument('--icons', type=str, default='ascii',
+                       choices=['ascii', 'unicode', 'html'],
+                       help='Icon style for output (default: ascii)')
     args = parser.parse_args()
 
     # Configure logging
@@ -74,6 +77,9 @@ def main():
         print(f"ERROR: Invalid time range: {args.time_range}")
         return 1
 
+    # Get icon style
+    ok_icon = get_console_icon('ok', args.icons)
+
     print("="*80)
     print("WIZ CI/CD SCAN REPORT GENERATOR")
     print("="*80)
@@ -87,26 +93,26 @@ def main():
     # Authenticate
     print("Authenticating with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"  ✓ Successfully authenticated (Data Center: {dc})")
+    print(f"  {ok_icon} Successfully authenticated (Data Center: {dc})")
     print()
 
     # Fetch data with time filter
     print(f"Fetching CI/CD scan data ({time_desc})...")
     variables = create_time_filter_variables(days=days, hours=hours)
-    scans = reporter.fetch_all_scans(variables=variables)
+    scans = reporter.fetch_all_scans(variables=variables, icon_style=args.icons)
     print()
 
     # Generate reports
     print("Generating CSV reports...")
     files = reporter.generate_csv_reports()
     for report_type, filename in files.items():
-        print(f"  ✓ {report_type}: {filename}")
+        print(f"  {ok_icon} {report_type}: {filename}")
     print()
 
     # Print summary
     reporter.print_summary()
 
-    print("\n✓ All reports generated successfully!")
+    print(f"\n{ok_icon} All reports generated successfully!")
     return 0
 
 

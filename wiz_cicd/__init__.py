@@ -30,6 +30,7 @@ from .processor import (
     calculate_daily_trends
 )
 from .queries import create_time_filter_variables
+from .icons import get_icons, get_console_icon, get_scan_type_icon, get_js_icon_object
 
 
 def configure_logging(level: str = 'INFO', format: str = None):
@@ -66,5 +67,9 @@ __all__ = [
     "calculate_daily_trends",
     "create_time_filter_variables",
     "configure_logging",
+    "get_icons",
+    "get_console_icon",
+    "get_scan_type_icon",
+    "get_js_icon_object",
     "__version__",
 ]

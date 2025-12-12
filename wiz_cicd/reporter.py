@@ -23,6 +23,7 @@ from .processor import (
     calculate_finding_type_stats,
     calculate_daily_trends
 )
+from .icons import get_console_icon
 
 # Configure module logger
 logger = logging.getLogger(__name__)
@@ -239,7 +240,8 @@ class WizCICDReporter:
     def fetch_all_scans(
         self,
         variables: Optional[Dict[str, Any]] = None,
-        verbose: bool = True
+        verbose: bool = True,
+        icon_style: str = 'ascii'
     ) -> List[Dict[str, Any]]:
         """
         Fetch all CI/CD scans with automatic pagination.
@@ -247,6 +249,7 @@ class WizCICDReporter:
         Args:
             variables: Query variables (uses default if None)
             verbose: Print progress messages
+            icon_style: Icon style for console output ('ascii', 'unicode', 'html')
 
         Returns:
             List of scan dictionaries
@@ -303,7 +306,8 @@ class WizCICDReporter:
 
         logger.info(f"Successfully retrieved {len(all_events)} total scans")
         if verbose:
-            print(f"✓ Retrieved {len(all_events)} total scans\n")
+            ok_icon = get_console_icon('ok', icon_style)
+            print(f"{ok_icon} Retrieved {len(all_events)} total scans\n")
 
         # Cache the raw scans
         self._raw_scans = all_events
