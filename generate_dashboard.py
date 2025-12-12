@@ -65,6 +65,12 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output"):
         scan_copy['tags'] = scan_tags.get(scan['scan_id'], [])
         scans_with_tags.append(scan_copy)
 
+    # Pre-compute JSON strings outside f-string for Python <3.12 compatibility
+    # (backslashes not allowed in f-string expressions before 3.12)
+    escape_script_close = '<\\/'
+    all_scans_json = json.dumps(json.dumps(scans_with_tags).replace('</', escape_script_close))
+    tag_index_json = json.dumps(json.dumps(tag_index).replace('</', escape_script_close))
+
     html_content = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -372,8 +378,8 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output"):
 
     <script>
         // Embedded scan data (properly escaped to prevent XSS)
-        const allScans = JSON.parse({json.dumps(json.dumps(scans_with_tags).replace('</', '<\\/'))});
-        const tagIndex = JSON.parse({json.dumps(json.dumps(tag_index).replace('</', '<\\/'))});
+        const allScans = JSON.parse({all_scans_json});
+        const tagIndex = JSON.parse({tag_index_json});
 
         let currentScans = allScans;
         let charts = {{}};
