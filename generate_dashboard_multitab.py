@@ -1288,12 +1288,12 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                     Executive Summary
                 </button>
                 <button class="tab-button" onclick="switchTab('detailed')">
-                    📋 Detailed Reporting
+                    Detailed Reporting
                 </button>
             </div>
             <div class="tab-export">
                 <button class="export-button pdf" id="tabExportBtn" onclick="exportCurrentTab()">
-                    📄 Export as PDF
+                    Export as PDF
                 </button>
             </div>
         </div>
@@ -1429,27 +1429,22 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                             <div class="dropdown-panel" id="scanTypePanel">
                                 <div class="dropdown-item" onclick="document.getElementById('type_CONTAINER_IMAGE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_CONTAINER_IMAGE" value="CONTAINER_IMAGE" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">🐳</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">Container Image</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_DIRECTORY').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_DIRECTORY" value="DIRECTORY" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">📁</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">Directory</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_IAC').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_IAC" value="IAC" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">☁️</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">IaC</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_VIRTUAL_MACHINE_IMAGE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_VIRTUAL_MACHINE_IMAGE" value="VIRTUAL_MACHINE_IMAGE" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">💿</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">VM Image</span>
                                 </div>
                                 <div class="dropdown-item" onclick="document.getElementById('type_VIRTUAL_MACHINE').click();" style="cursor: pointer; display: block !important; padding: 12px 14px; background: white;">
                                     <input type="checkbox" id="type_VIRTUAL_MACHINE" value="VIRTUAL_MACHINE" checked onchange="updateScanTypeFilter()" onclick="event.stopPropagation();" style="width: 18px; height: 18px; margin-right: 10px; vertical-align: middle;">
-                                    <span style="font-size: 18px; margin-right: 10px; vertical-align: middle;">🖥️</span>
                                     <span style="font-size: 14px; color: #1e293b; font-weight: 500; vertical-align: middle;">Virtual Machine</span>
                                 </div>
                             </div>
@@ -2397,13 +2392,13 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
         // Get icon for scan type
         function getScanTypeIcon(scanType) {{
             const icons = {{
-                'CONTAINER_IMAGE': '🐳',
-                'DIRECTORY': '📁',
-                'IAC': '☁️',
-                'VIRTUAL_MACHINE_IMAGE': '💿',
-                'VIRTUAL_MACHINE': '🖥️'
+                'CONTAINER_IMAGE': '[C]',
+                'DIRECTORY': '[D]',
+                'IAC': '[I]',
+                'VIRTUAL_MACHINE_IMAGE': '[V]',
+                'VIRTUAL_MACHINE': '[M]'
             }};
-            return icons[scanType] || '📄';
+            return icons[scanType] || '[?]';
         }}
 
         function toggleSidebar() {{
@@ -3189,7 +3184,7 @@ Examples:
     # Authenticate
     print("Authenticating with Wiz API...")
     token, dc = reporter.authenticate()
-    print(f"  ✓ Authenticated (Data Center: {dc})")
+    print(f"  [OK] Authenticated (Data Center: {dc})")
     print()
 
     # Create custom query variables with time filter
@@ -3207,7 +3202,7 @@ Examples:
     print()
 
     print("="*80)
-    print(f"✓ Multi-tab dashboard generated successfully!")
+    print(f"[OK] Multi-tab dashboard generated successfully!")
     print(f"  Time Range: {time_desc}")
     print(f"  Total Scans: {len(scans)}")
     print(f"  Open in browser: {filename}")
