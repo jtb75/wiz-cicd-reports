@@ -225,6 +225,15 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
                     if tag_filter in application_groups:
                         add_scan_to_group(application_groups[tag_filter], scan)
 
+    # Pre-compute JSON strings outside f-string for Python <3.12 compatibility
+    # (backslashes not allowed in f-string expressions before 3.12)
+    escape_script_close = '<\\/'
+    all_scans_json = json.dumps(json.dumps(scans_with_tags).replace('</', escape_script_close))
+    app_groups_json = json.dumps(json.dumps(application_groups).replace('</', escape_script_close))
+    daily_trends_json = json.dumps(json.dumps(daily_trends).replace('</', escape_script_close))
+    finding_stats_json = json.dumps(json.dumps(finding_stats).replace('</', escape_script_close))
+    verdict_stats_json = json.dumps(json.dumps(verdict_stats).replace('</', escape_script_close))
+
     html_content = f"""
 <!DOCTYPE html>
 <html lang="en">
@@ -1492,11 +1501,11 @@ def generate_html_dashboard(reporter: WizCICDReporter, output_dir="output", time
 
     <script>
         // Embedded scan data (properly escaped to prevent XSS)
-        const allScans = JSON.parse({json.dumps(json.dumps(scans_with_tags).replace('</', '<\\/'))});
-        const applicationGroups = JSON.parse({json.dumps(json.dumps(application_groups).replace('</', '<\\/'))});
-        const dailyTrends = JSON.parse({json.dumps(json.dumps(daily_trends).replace('</', '<\\/'))});
-        const findingStats = JSON.parse({json.dumps(json.dumps(finding_stats).replace('</', '<\\/'))});
-        const verdictStats = JSON.parse({json.dumps(json.dumps(verdict_stats).replace('</', '<\\/'))});
+        const allScans = JSON.parse({all_scans_json});
+        const applicationGroups = JSON.parse({app_groups_json});
+        const dailyTrends = JSON.parse({daily_trends_json});
+        const findingStats = JSON.parse({finding_stats_json});
+        const verdictStats = JSON.parse({verdict_stats_json});
         const reportTimeRange = {json.dumps(time_range_desc)};
 
         let charts = {{}};
